@@ -1,0 +1,18 @@
+html, body {
+	margin: 0px;
+	padding: 0px;
+}
+
+div {
+	margin: 0px;
+	padding: 0px;
+}
+
+#left_bar, #lvl {
+	display: inline-block;
+	float: left;
+}
+
+#left_bar div {
+	border: black solid 1px;
+}
