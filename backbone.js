@@ -31,8 +31,6 @@ let def_sizes = function() {
 	lvl.style.height = "" + lvl_height + "px";
 	// lvl.style.height = "100%";
 	lvl.style.border = "solid red " + lvl_border + "px";
-
-	console.log(screen_w, body_border, left_width, left_border, lvl_border, lvl_width);
 };
 
 

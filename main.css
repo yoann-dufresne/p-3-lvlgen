@@ -16,3 +16,18 @@ div {
 #left_bar div {
 	border: black solid 1px;
 }
+
+#lvl_adder {
+	height: 100px;
+	padding: 30px;
+	text-align: center;
+}
+
+#lvl_type {
+	margin: 15px;
+}
+
+#lvl_list {
+	overflow-x: hidden;
+  overflow-y: auto;
+}
