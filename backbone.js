@@ -25,7 +25,7 @@ let def_sizes = function() {
 	let lvl = document.querySelector("#lvl");
 	let lvl_border = 0;
 	//              1433           1             300          1                 3
-	let lvl_width = screen_w - 2 * body_border - left_width - left_border - 2 * lvl_border;
+	let lvl_width = screen_w - 2 * body_border - left_width - left_border - 2 * lvl_border - 10;
 	let lvl_height = screen_h - 2 * body_border - 2 * lvl_border;
 	lvl.style.width = "" + lvl_width + "px";
 	lvl.style.height = "" + lvl_height + "px";
