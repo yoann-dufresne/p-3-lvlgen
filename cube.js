@@ -4,7 +4,9 @@ let create_face = function() {
 	// Create container
 	let div = document.createElement("div");
 	div.classList.add("face");
-	div.style.border = "solid black 1px";
+	// div.style.border = "solid black 1px";
+	div.style.padding = "10px";
+	div.style.display = "inline-block";
 	div.style["min-height"] = "200px";
 	div.style["min-width"] = "200px";
 
