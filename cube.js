@@ -32,11 +32,33 @@ let create_face = function() {
 };
 
 
+let create_cube = function() {
+	let div = document.createElement("div");
+	div.style.display = "inline-block";
+
+	div.innerHTML = '<table>\
+		<tr><td></td><td id="cell_1"></td><td></td><td></td></tr>\
+		<tr><td id="cell_2"></td><td id="cell_0"></td><td id="cell_3"></td><td id="cell_5"></td></tr>\
+		<tr><td></td><td></td><td id="cell_4"></td><td></td></tr>\
+	</table>'
+	let cells = div.querySelectorAll("td");
+
+	// Add faces
+	let faces = [... new Array(6)].map(create_face);
+	for (let i=0 ; i<6 ; i++) {
+		let cell = div.querySelector("#cell_" + i);
+		cell.appendChild(faces[i]);
+	}
+
+	return div;
+}
+
+
 let main_cube = function() {
 	let lvl = document.querySelector("#lvl");
 
-	let face = create_face();
-	lvl.appendChild(face);
+	let cube = create_cube();
+	lvl.appendChild(cube);
 };
 
 main_cube();

@@ -41,7 +41,7 @@ table {
 
 /* Face */
 
-td {
+.face td {
 	border: solid black 1px;
 }
 
