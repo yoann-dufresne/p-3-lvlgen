@@ -1,0 +1,12 @@
+.laby_legend, .tile, .vertical_wall, .horizontal_wall {
+	cursor: pointer;
+}
+
+.laby_legend p {
+	margin: 0px;
+}
+
+.laby_legend * {
+	font-size: 30px;
+	vertical-align: middle;
+}
