@@ -20,6 +20,7 @@ class Labyrinth {
 		this.add_tile_triggers();
 		this.intern_walls = [...Array(24)].map(()=>false);
 		this.extern_walls = [...Array(16)].map(()=>false);
+		this.add_walls_triggers();
 	}
 
 	add_legend() {
@@ -74,6 +75,78 @@ class Labyrinth {
 						tile.style["background-color"] = that.current_value.color;
 					}
 				}
+			}
+		}
+	}
+
+	add_walls_triggers() {
+		let that = this;
+		let opposite = {black: "white", white: "black", undefined:"black"};
+
+		for (let face=0 ; face<6 ; face++) {
+			let face_includer = this.display.querySelector("#cell_" + face);
+			let verticals = face_includer.querySelectorAll(".vertical_wall");
+			
+			// Vertical walls
+			for (let v_idx=0 ; v_idx<verticals.length ; v_idx++) {
+				if (v_idx % 5 == 0) {
+					verticals[v_idx].onclick = function() {
+						that.extern_walls[v_idx/5] = !that.extern_walls[v_idx/5];
+						if (!["black", "white"].includes(verticals[v_idx].style["background-color"])) 
+							verticals[v_idx].style["background-color"] = "black";
+						else
+							verticals[v_idx].style["background-color"] = opposite[verticals[v_idx].style["background-color"]];
+					};
+				} else if (v_idx % 5 == 4) {
+					verticals[v_idx].onclick = function() {
+						that.extern_walls[11 - v_idx/5] = !that.extern_walls[11 - v_idx/5];
+						if (!["black", "white"].includes(verticals[v_idx].style["background-color"])) 
+							verticals[v_idx].style["background-color"] = "black";
+						else
+							verticals[v_idx].style["background-color"] = opposite[verticals[v_idx].style["background-color"]];
+					};
+				} else {
+					verticals[v_idx].onclick = function() {
+						that.intern_walls[v_idx/5 * 3 + (v_idx % 5) - 1] = !that.intern_walls[v_idx/5 * 3 + (v_idx % 5) - 1];
+						if (!["black", "white"].includes(verticals[v_idx].style["background-color"])) 
+							verticals[v_idx].style["background-color"] = "black";
+						else
+							verticals[v_idx].style["background-color"] = opposite[verticals[v_idx].style["background-color"]];
+					};
+				}
+			}
+
+			// horizontal walls
+			let horizontals = face_includer.querySelectorAll(".horizontal_wall");
+			// First row
+			for (let h_idx=0 ; h_idx<4 ; h_idx++) {
+				horizontals[h_idx].onclick = function() {
+					that.extern_walls[15 - h_idx] = !that.extern_walls[15 - h_idx];
+					if (!["black", "white"].includes(horizontals[h_idx].style["background-color"])) 
+						horizontals[h_idx].style["background-color"] = "black";
+					else
+						horizontals[h_idx].style["background-color"] = opposite[horizontals[h_idx].style["background-color"]];
+				};
+
+			// 3 middle rows
+			for (let h_idx=4 ; h_idx<16 ; h_idx++)
+				horizontals[h_idx].onclick = function() {
+					that.intern_walls[(h_idx % 4) * 3 + h_idx / 4 - 1] = !that.intern_walls[(h_idx % 4) * 3 + h_idx / 4 - 1];
+					if (!["black", "white"].includes(horizontals[h_idx].style["background-color"])) 
+						horizontals[h_idx].style["background-color"] = "black";
+					else
+						horizontals[h_idx].style["background-color"] = opposite[horizontals[h_idx].style["background-color"]];
+				};
+
+			// Last row
+			for (let h_idx=16 ; h_idx<20 ; h_idx++)
+				horizontals[h_idx].onclick = function() {
+					that.extern_walls[3 + h_idx - 16] = !that.extern_walls[3 + h_idx - 16];
+					if (!["black", "white"].includes(horizontals[h_idx].style["background-color"])) 
+						horizontals[h_idx].style["background-color"] = "black";
+					else
+						horizontals[h_idx].style["background-color"] = opposite[horizontals[h_idx].style["background-color"]];
+				};
 			}
 		}
 	}
