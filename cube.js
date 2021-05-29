@@ -61,4 +61,4 @@ let main_cube = function() {
 	lvl.appendChild(cube);
 };
 
-main_cube();
+// main_cube();
