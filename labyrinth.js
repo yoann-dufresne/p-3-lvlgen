@@ -1,9 +1,11 @@
 
 let legends_data = [
 	{name: "none", color: "white"},
+	{name: "hero", color: "lightgrey"},
 	{name: "win", color: "green"},
 	{name: "enemy", color: "red"}
 ];
+
 
 class Labyrinth {
 	constructor(div) {
@@ -18,9 +20,39 @@ class Labyrinth {
 		// Cube values
 		this.tiles = [...Array(6)].map(()=>[...Array(4)].map(()=>[...Array(4)].map(()=>"none")));
 		this.add_tile_triggers();
-		this.intern_walls = [...Array(24)].map(()=>false);
-		this.extern_walls = [...Array(16)].map(()=>false);
+		this.intern_walls = [...Array(6)].map(()=>[...Array(24)].map(()=>false));
+		this.extern_walls = [...Array(6)].map(()=>[...Array(16)].map(()=>false));
 		this.add_walls_triggers();
+	}
+
+	get_binary() {
+		let bin_array = ['L'.charCodeAt(0), 0];
+
+		let hero_coords[-1, -1, -1];
+		for (let f=0 ; f<6 ; f++)
+			for (let r=0 ; r<4 ; r++)
+				for (let c=0 ; c<4 ; c++)
+					if (this.tiles[f][r][c] == "hero")
+						hero_coords = [f, r, c];
+		bin_array = bin_array.concat(hero_coords);
+
+		let faces_used = 0;
+		let rotations = [0, 1, 3, 2, 3, 1];
+
+		for (let f=0 ; f<6 ; f++) {
+			let bin_face = this.get_face_binary(f, rotations[f]);
+			if (bin_face != null) {
+				faces_used |= 1<<f;
+				bin_array = bin_array.concat(bin_face);
+			}
+		}
+		bin_array[1] = faces_used;
+
+		return bin_array;
+	}
+
+	get_face_binary(face, rotation) {
+		return null;
 	}
 
 	add_legend() {
@@ -89,25 +121,30 @@ class Labyrinth {
 			
 			// Vertical walls
 			for (let v_idx=0 ; v_idx<verticals.length ; v_idx++) {
+				// First column
 				if (v_idx % 5 == 0) {
 					verticals[v_idx].onclick = function() {
-						that.extern_walls[v_idx/5] = !that.extern_walls[v_idx/5];
+						that.extern_walls[face][Math.floor(v_idx/5)] = !that.extern_walls[face][Math.floor(v_idx/5)];
 						if (!["black", "white"].includes(verticals[v_idx].style["background-color"])) 
 							verticals[v_idx].style["background-color"] = "black";
 						else
 							verticals[v_idx].style["background-color"] = opposite[verticals[v_idx].style["background-color"]];
 					};
-				} else if (v_idx % 5 == 4) {
+				}
+				// Last column
+				else if (v_idx % 5 == 4) {
 					verticals[v_idx].onclick = function() {
-						that.extern_walls[11 - v_idx/5] = !that.extern_walls[11 - v_idx/5];
+						that.extern_walls[face][11 - Math.floor(v_idx/5)] = !that.extern_walls[face][11 - Math.floor(v_idx/5)];
 						if (!["black", "white"].includes(verticals[v_idx].style["background-color"])) 
 							verticals[v_idx].style["background-color"] = "black";
 						else
 							verticals[v_idx].style["background-color"] = opposite[verticals[v_idx].style["background-color"]];
 					};
-				} else {
+				}
+				// Middle columns
+				else {
 					verticals[v_idx].onclick = function() {
-						that.intern_walls[v_idx/5 * 3 + (v_idx % 5) - 1] = !that.intern_walls[v_idx/5 * 3 + (v_idx % 5) - 1];
+						that.intern_walls[face][Math.floor(v_idx/5) * 3 + (v_idx % 5) - 1] = !that.intern_walls[face][Math.floor(v_idx/5) * 3 + (v_idx % 5) - 1];
 						if (!["black", "white"].includes(verticals[v_idx].style["background-color"])) 
 							verticals[v_idx].style["background-color"] = "black";
 						else
@@ -121,7 +158,7 @@ class Labyrinth {
 			// First row
 			for (let h_idx=0 ; h_idx<4 ; h_idx++) {
 				horizontals[h_idx].onclick = function() {
-					that.extern_walls[15 - h_idx] = !that.extern_walls[15 - h_idx];
+					that.extern_walls[face][15 - h_idx] = !that.extern_walls[face][15 - h_idx];
 					if (!["black", "white"].includes(horizontals[h_idx].style["background-color"])) 
 						horizontals[h_idx].style["background-color"] = "black";
 					else
@@ -131,7 +168,8 @@ class Labyrinth {
 			// 3 middle rows
 			for (let h_idx=4 ; h_idx<16 ; h_idx++)
 				horizontals[h_idx].onclick = function() {
-					that.intern_walls[(h_idx % 4) * 3 + h_idx / 4 - 1] = !that.intern_walls[(h_idx % 4) * 3 + h_idx / 4 - 1];
+					that.intern_walls[face][12 + (h_idx % 4) * 3 + Math.floor(h_idx / 4) - 1] =
+							!that.intern_walls[face][12 + (h_idx % 4) * 3 + Math.floor(h_idx / 4) - 1];
 					if (!["black", "white"].includes(horizontals[h_idx].style["background-color"])) 
 						horizontals[h_idx].style["background-color"] = "black";
 					else
@@ -141,7 +179,7 @@ class Labyrinth {
 			// Last row
 			for (let h_idx=16 ; h_idx<20 ; h_idx++)
 				horizontals[h_idx].onclick = function() {
-					that.extern_walls[3 + h_idx - 16] = !that.extern_walls[3 + h_idx - 16];
+					that.extern_walls[face][4 + h_idx - 16] = !that.extern_walls[face][4 + h_idx - 16];
 					if (!["black", "white"].includes(horizontals[h_idx].style["background-color"])) 
 						horizontals[h_idx].style["background-color"] = "black";
 					else
