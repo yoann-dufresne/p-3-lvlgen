@@ -28,13 +28,13 @@ class Labyrinth {
 	get_binary() {
 		let bin_array = ['L'.charCodeAt(0), 0];
 
-		let hero_coords[-1, -1, -1];
+		let hero_coords = [-1, -1, -1];
 		for (let f=0 ; f<6 ; f++)
 			for (let r=0 ; r<4 ; r++)
 				for (let c=0 ; c<4 ; c++)
 					if (this.tiles[f][r][c] == "hero")
 						hero_coords = [f, r, c];
-		bin_array = bin_array.concat(hero_coords);
+		bin_array = bin_array.concat(compact_coords(...hero_coords));
 
 		let faces_used = 0;
 		let rotations = [0, 1, 3, 2, 3, 1];
