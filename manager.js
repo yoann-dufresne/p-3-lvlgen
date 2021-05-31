@@ -1,6 +1,7 @@
 
 // Manually defined
 let enigma_classes = [Labyrinth];
+let global_enigma_list = [];
 
 
 let set_options = function() {
@@ -35,6 +36,7 @@ let set_onclicks = function() {
 		// Create the object linked
 		let val = document.querySelector("#lvl_type").value;
 		let obj = new class_dict[val](lvl_div);
+		global_enigma_list.push(obj);
 
 		// Set div onclick operation
 		lvl_div.onclick = function() {
@@ -55,10 +57,12 @@ let set_onclicks = function() {
 
 		// Remove main display on delete
 		let del_btn = lvl_div.querySelector(".del_lvl");
+		// Rm the lvl obj from the level list
 		let prev_del_func = del_btn.onclick;
 		del_btn.onclick = function(e) {
 			// Compute next lvl to select
 			var index = Array.prototype.indexOf.call(lvl_div.parentNode.children, lvl_div);
+			global_enigma_list.splice(index, 1);
 			if (index == lvl_div.parentNode.childElementCount - 1)
 				if (index == 0)
 					index = -1;
@@ -66,8 +70,8 @@ let set_onclicks = function() {
 					index -= 1;
 			// Delete the div from the list
 			let is_selected = lvl_div.style["background-color"] != "white";
-			let ret_val = prev_del_func(e);
-			
+			prev_del_func(e);
+
 			// Event propagation
 			lvl_div.id = "lvl_deleted";
 			if (!is_selected)
@@ -83,6 +87,45 @@ let set_onclicks = function() {
 				document.querySelector("#lvl_list").children[index].onclick();
 			}
 		}
+
+		// Up and down buttons
+		let up_btn = lvl_div.querySelector(".up_lvl");
+		up_btn.onclick = function() {
+			var index = Array.prototype.indexOf.call(lvl_div.parentNode.children, lvl_div);
+
+			if (index == 0)
+				return;
+
+			// Modification of global list
+			let elem = global_enigma_list.splice(index, 1);
+			global_enigma_list.splice(index-1, 0, elem);
+
+			// Modification of displayes list
+			let lvls = document.querySelector("#lvl_list");
+			lvls.removeChild(lvl_div);
+			lvls.insertBefore(lvl_div, lvls.children[index-1]);
+		};
+
+		let down_btn = lvl_div.querySelector(".down_lvl");
+		down_btn.onclick = function() {
+			var index = Array.prototype.indexOf.call(lvl_div.parentNode.children, lvl_div);
+
+			if (index == lvl_div.parentNode.childElementCount - 1)
+				return;
+
+			// Modification of global list
+			let elem = global_enigma_list.splice(index, 1);
+			global_enigma_list.splice(index+1, 0, elem);
+
+			// Modification of displayes list
+			let lvls = document.querySelector("#lvl_list");
+			lvls.removeChild(lvl_div);
+
+			if (index == lvls.childElementCount - 1)
+				lvls.appendChild(lvl_div);
+			else
+				lvls.insertBefore(lvl_div, lvls.children[index+1]);
+		};
 	}
 }
 

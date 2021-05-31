@@ -33,7 +33,6 @@ walls[39].onclick();
 // Set tiles
 let legends = document.querySelectorAll(".laby_legend");
 let tiles = face.querySelectorAll(".tile");
-console.log(tiles);
 // Hero
 legends[1].onclick();
 tiles[0].onclick();
