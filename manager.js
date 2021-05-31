@@ -97,7 +97,7 @@ let set_onclicks = function() {
 				return;
 
 			// Modification of global list
-			let elem = global_enigma_list.splice(index, 1);
+			let elem = global_enigma_list.splice(index, 1)[0];
 			global_enigma_list.splice(index-1, 0, elem);
 
 			// Modification of displayes list
@@ -114,7 +114,7 @@ let set_onclicks = function() {
 				return;
 
 			// Modification of global list
-			let elem = global_enigma_list.splice(index, 1);
+			let elem = global_enigma_list.splice(index, 1)[0];
 			global_enigma_list.splice(index+1, 0, elem);
 
 			// Modification of displayes list
