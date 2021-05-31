@@ -136,13 +136,26 @@ let set_save_onclicks = function() {
 	let save_btn = document.querySelector("#lvl_save");
 
 	save_btn.onclick = function() {
-		let binary = [global_enigma_list.length];
-		
+		// Create the binary stream
+		let binary = [global_enigma_list.length];		
 		for (let lvl of global_enigma_list) {
 			binary = binary.concat(lvl.get_binary());
 		}
-
 		console.log(binary);
+
+		// Create the file
+		const blob = new Blob([new Int8Array(binary)], {type: 'octet/stream'});
+  	const url = window.URL.createObjectURL(blob);
+  	setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+
+  	// Download the created file
+  	const a = document.createElement('a');
+	  a.href = url;
+	  a.download = "cube.bin";
+	  document.body.appendChild(a);
+	  a.style.display = 'none';
+	  // a.click();
+	  a.remove();
 	}
 }
 

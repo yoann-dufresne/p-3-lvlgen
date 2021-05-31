@@ -64,7 +64,7 @@ class Labyrinth {
 
 					if (!["hero", "none"].includes(val)) {
 						bin_array[0] += 1;
-						bin_array = bin_array.concat([val[0], compact_coords(f, r, c)]);
+						bin_array = bin_array.concat([val.charCodeAt(0), compact_coords(f, r, c)]);
 					}
 				}
 			}
