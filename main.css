@@ -26,12 +26,12 @@ table {
 
 #lvl_adder {
 	height: 100px;
-	padding: 30px;
+	padding: 20px;
 	text-align: center;
 }
 
-#lvl_type {
-	margin: 15px;
+#lvl_type, #lvl_add, #lvl_save {
+	margin: 7px;
 }
 
 #lvl_list {

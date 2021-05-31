@@ -28,6 +28,7 @@ class Labyrinth {
 	get_binary() {
 		let bin_array = ['L'.charCodeAt(0), 0];
 
+		// Hero position
 		let hero_coords = [-1, -1, -1];
 		for (let f=0 ; f<6 ; f++)
 			for (let r=0 ; r<4 ; r++)
@@ -36,11 +37,10 @@ class Labyrinth {
 						hero_coords = [f, r, c];
 		bin_array = bin_array.concat(compact_coords(...hero_coords));
 
+		// walls
 		let faces_used = 0;
-		let rotations = [0, 1, 3, 2, 3, 1];
-
 		for (let f=0 ; f<6 ; f++) {
-			let bin_face = this.get_face_binary(f, rotations[f]);
+			let bin_face = this.get_face_binary(f, face_rotations[f]);
 			if (bin_face != null) {
 				faces_used |= 1<<f;
 				bin_array = bin_array.concat(bin_face);
@@ -48,11 +48,60 @@ class Labyrinth {
 		}
 		bin_array[1] = faces_used;
 
+		bin_array = bin_array.concat(this.get_objects());
+
+		return bin_array;
+	}
+
+	get_objects() {
+		let bin_array = [0];
+
+		// Objects
+		for (let f=0 ; f<6 ; f++) {
+			for (let r=0 ; r<4 ; r++) {
+				for (let c=0 ; c<4 ; c++) {
+					let val = this.tiles[f][r][c];
+
+					if (!["hero", "none"].includes(val)) {
+						bin_array[0] += 1;
+						bin_array = bin_array.concat([val[0], compact_coords(f, r, c)]);
+					}
+				}
+			}
+		}
+
 		return bin_array;
 	}
 
 	get_face_binary(face, rotation) {
-		return null;
+		let bin_array = [];
+		let empty = true;
+
+		// Internal walls
+		let int = 0;
+		for (let i=0 ; i<24 ; i++) {
+			int |= (this.intern_walls[face][i] ? 1 : 0) << (23 - i);
+		}
+		bin_array = bin_array.concat([int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF])
+		if (int != 0)
+			empty = false;
+
+		// External walls
+		let ext = 0;
+		for (let i=0 ; i<16 ; i++) {
+			ext |= (this.extern_walls[face][i] ? 1 : 0) << i;
+		}
+		bin_array = bin_array.concat([ext & 0xFF, ext >> 8 & 0xFF])
+		if (ext != 0)
+			empty = false;
+
+		// objects
+
+		// Return
+		if (empty)
+			return null;
+		else
+			return bin_array;
 	}
 
 	add_legend() {

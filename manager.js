@@ -16,7 +16,7 @@ let set_options = function() {
 	}
 }
 
-let set_onclicks = function() {
+let set_add_onclicks = function() {
 	// prepare classes dict
 	let class_dict = {};
 	for (let cls of enigma_classes)
@@ -126,11 +126,30 @@ let set_onclicks = function() {
 			else
 				lvls.insertBefore(lvl_div, lvls.children[index+1]);
 		};
+
+		lvl_div.onclick();
 	}
 }
 
+
+let set_save_onclicks = function() {
+	let save_btn = document.querySelector("#lvl_save");
+
+	save_btn.onclick = function() {
+		let binary = [global_enigma_list.length];
+		
+		for (let lvl of global_enigma_list) {
+			binary = binary.concat(lvl.get_binary());
+		}
+
+		console.log(binary);
+	}
+}
+
+
 let manager_main = function() {
 	set_options();
-	set_onclicks();
+	set_add_onclicks();
+	set_save_onclicks();
 }
 manager_main();

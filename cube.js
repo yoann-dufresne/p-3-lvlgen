@@ -37,9 +37,9 @@ let create_cube = function() {
 	div.style.display = "inline-block";
 
 	div.innerHTML = '<table>\
-		<tr><td class="face_includer"></td><td class="face_includer" id="cell_1"></td><td class="face_includer"></td><td class="face_includer"></td></tr>\
-		<tr><td class="face_includer" id="cell_2"></td><td class="face_includer" id="cell_0"></td><td class="face_includer" id="cell_3"></td><td class="face_includer" id="cell_5"></td></tr>\
-		<tr><td class="face_includer"></td><td class="face_includer"></td><td class="face_includer" id="cell_4"></td><td class="face_includer"></td></tr>\
+		<tr><td class="face_includer"></td><td class="face_includer" id="cell_5"></td><td class="face_includer"></td><td class="face_includer"></td></tr>\
+		<tr><td class="face_includer" id="cell_3"></td><td class="face_includer" id="cell_4"></td><td class="face_includer" id="cell_2"></td><td class="face_includer" id="cell_1"></td></tr>\
+		<tr><td class="face_includer"></td><td class="face_includer"></td><td class="face_includer" id="cell_0"></td><td class="face_includer"></td></tr>\
 	</table>'
 	let cells = div.querySelectorAll("td");
 

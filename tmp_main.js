@@ -3,7 +3,7 @@ document.querySelector("#lvl_add").onclick();
 document.querySelector("#lvl_list").firstChild.onclick();
 
 // Set walls
-let face = document.querySelector("#cell_0");
+let face = document.querySelector("#cell_4");
 let walls = face.querySelectorAll(".vertical_wall, .horizontal_wall");
 walls[0].onclick();
 walls[1].onclick();
@@ -42,3 +42,6 @@ tiles[15].onclick();
 // Enemy
 legends[3].onclick();
 tiles[14].onclick();
+
+// Click save
+document.querySelector("#lvl_save").onclick();
