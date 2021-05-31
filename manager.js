@@ -141,7 +141,6 @@ let set_save_onclicks = function() {
 		for (let lvl of global_enigma_list) {
 			binary = binary.concat(lvl.get_binary());
 		}
-		console.log(binary);
 
 		// Create the file
 		const blob = new Blob([new Int8Array(binary)], {type: 'octet/stream'});
@@ -154,7 +153,7 @@ let set_save_onclicks = function() {
 	  a.download = "cube.bin";
 	  document.body.appendChild(a);
 	  a.style.display = 'none';
-	  // a.click();
+	  a.click();
 	  a.remove();
 	}
 }
