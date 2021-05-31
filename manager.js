@@ -143,14 +143,15 @@ let set_save_onclicks = function() {
 		}
 
 		// Create the file
-		const blob = new Blob([new Int8Array(binary)], {type: 'octet/stream'});
+		// const blob = new Blob([new Int8Array(binary)], {type: 'octet/stream'});
+		const blob = new Blob(binary, {type: 'plain/text'});
   	const url = window.URL.createObjectURL(blob);
   	setTimeout(() => window.URL.revokeObjectURL(url), 1000);
 
   	// Download the created file
   	const a = document.createElement('a');
 	  a.href = url;
-	  a.download = "cube.bin";
+	  a.download = "cube.txt";
 	  document.body.appendChild(a);
 	  a.style.display = 'none';
 	  a.click();

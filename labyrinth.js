@@ -95,8 +95,6 @@ class Labyrinth {
 		if (ext != 0)
 			empty = false;
 
-		// objects
-
 		// Return
 		if (empty)
 			return null;
