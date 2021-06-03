@@ -73,6 +73,36 @@ class Labyrinth {
 		return bin_array;
 	}
 
+	intern_rot(walls_int, rotation) {
+		if (rotation == 0) {
+			// Base value
+			return walls_int;
+		} else {
+			let rotated_walls = 0;
+			// horizontals -> verticals
+			rotated_walls = ((walls_int & 0b111) << 21) | (((walls_int >> 3) & 0b111) << 18);
+			rotated_walls |= (((walls_int >> 6) & 0b111) << 15) | (((walls_int >> 9) & 0b111) << 12);
+			// verticals -> horizontals
+			walls_int = reverse_bits(walls_int, 3);
+			rotated_walls |= ((walls_int & 0b111) << 9) | (((walls_int >> 3) & 0b111) << 6);
+			rotated_walls |= (((walls_int >> 6) & 0b111) << 3) | ((walls_int >> 9) & 0b111);
+
+			// Recursive call
+			return this.intern_rot(rotated_walls, rotation-1);
+		}
+	}
+
+	extern_rot(walls_int, rotation) {
+		if (rotation == 0) {
+			return walls_int;
+		} else {
+			let rotated_walls = (walls_int << 4) & 0xFFFF;
+			rotated_walls |= (walls_int >> 12) & 0xF;
+
+			return this.extern_rot(rotated_walls, rotation-1);
+		}
+	}
+
 	get_face_binary(face, rotation) {
 		let bin_array = [];
 		let empty = true;
@@ -82,6 +112,8 @@ class Labyrinth {
 		for (let i=0 ; i<24 ; i++) {
 			int |= (this.intern_walls[face][i] ? 1 : 0) << (23 - i);
 		}
+
+		int = this.intern_rot(int, rotation);
 		bin_array = bin_array.concat([int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF])
 		if (int != 0)
 			empty = false;
@@ -91,6 +123,7 @@ class Labyrinth {
 		for (let i=0 ; i<16 ; i++) {
 			ext |= (this.extern_walls[face][i] ? 1 : 0) << i;
 		}
+		ext = this.extern_rot(ext, rotation);
 		bin_array = bin_array.concat([ext & 0xFF, ext >> 8 & 0xFF])
 		if (ext != 0)
 			empty = false;
