@@ -69,9 +69,10 @@ class Labyrinth {
 				let rotated = coord_rot(r, c, rotation);
 				let r_rot = rotated[0];
 				let c_rot = rotated[1];
-				let val = this.tiles[f][r_rot][c_rot];
+				let val = this.tiles[f][r][c];
 
 				if (!["hero", "none"].includes(val)) {
+					// console.log(rotation, f, r, c, rotated);
 					nb_objects += 1;
 					bin_array = bin_array.concat(
 						[val.charCodeAt(0), compact_coords(f, r_rot, c_rot)]
@@ -133,10 +134,10 @@ class Labyrinth {
 		// External walls
 		let ext = 0;
 		for (let i=0 ; i<16 ; i++) {
-			ext |= (this.extern_walls[face][i] ? 1 : 0) << i;
+			ext |= (this.extern_walls[face][i] ? 1 : 0) << (15 - i);
 		}
 		ext = this.extern_rot(ext, rotation);
-		bin_array = bin_array.concat([ext & 0xFF, ext >> 8 & 0xFF])
+		bin_array = bin_array.concat([ext >> 8 & 0xFF, ext & 0xFF])
 		if (ext != 0)
 			empty = false;
 
