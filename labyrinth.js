@@ -48,27 +48,39 @@ class Labyrinth {
 		}
 		bin_array[1] = faces_used;
 
-		bin_array = bin_array.concat(this.get_objects());
+		let nb_objects_idx = bin_array.length;
+		bin_array.push(0);
+		for (let f=0 ; f<6 ; f++) {
+			let obj_array = this.get_objects(f, face_rotations[f]);
+			bin_array[nb_objects_idx] += obj_array.pop();
+			bin_array = bin_array.concat(obj_array);
+		}
 
 		return bin_array;
 	}
 
-	get_objects() {
-		let bin_array = [0];
+	get_objects(f, rotation) {
+		let nb_objects = 0;
+		let bin_array = [];
 
 		// Objects
-		for (let f=0 ; f<6 ; f++) {
-			for (let r=0 ; r<4 ; r++) {
-				for (let c=0 ; c<4 ; c++) {
-					let val = this.tiles[f][r][c];
+		for (let r=0 ; r<4 ; r++) {
+			for (let c=0 ; c<4 ; c++) {
+				let rotated = coord_rot(r, c, rotation);
+				let r_rot = rotated[0];
+				let c_rot = rotated[1];
+				let val = this.tiles[f][r_rot][c_rot];
 
-					if (!["hero", "none"].includes(val)) {
-						bin_array[0] += 1;
-						bin_array = bin_array.concat([val.charCodeAt(0), compact_coords(f, r, c)]);
-					}
+				if (!["hero", "none"].includes(val)) {
+					nb_objects += 1;
+					bin_array = bin_array.concat(
+						[val.charCodeAt(0), compact_coords(f, r_rot, c_rot)]
+					);
 				}
 			}
 		}
+		
+		bin_array.push(nb_objects);
 
 		return bin_array;
 	}

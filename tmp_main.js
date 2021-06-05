@@ -2,9 +2,9 @@
 document.querySelector("#lvl_add").onclick();
 document.querySelector("#lvl_list").firstChild.onclick();
 
-// Set walls
-let face = document.querySelector("#cell_4");
-let walls = face.querySelectorAll(".vertical_wall, .horizontal_wall");
+// Set walls face 4
+let face4 = document.querySelector("#cell_4");
+let walls = face4.querySelectorAll(".vertical_wall, .horizontal_wall");
 walls[0].onclick();
 walls[1].onclick();
 walls[2].onclick();
@@ -24,24 +24,31 @@ walls[26].onclick();
 walls[27].onclick();
 walls[31].onclick();
 walls[34].onclick();
-walls[35].onclick();
+// walls[35].onclick();
 walls[36].onclick();
 walls[37].onclick();
 walls[38].onclick();
 walls[39].onclick();
+// Set walls face 2
+let face2 = document.querySelector("#cell_2");
+walls = face2.querySelectorAll(".vertical_wall, .horizontal_wall");
+walls[27].onclick();
+walls[32].onclick();
+walls[36].onclick();
 
 // Set tiles
 let legends = document.querySelectorAll(".laby_legend");
-let tiles = face.querySelectorAll(".tile");
+let tiles4 = face4.querySelectorAll(".tile");
+let tiles2 = face2.querySelectorAll(".tile");
 // Hero
 legends[1].onclick();
-tiles[0].onclick();
+tiles4[0].onclick();
 // Win
 legends[2].onclick();
-tiles[15].onclick();
+tiles2[12].onclick();
 // Enemy
 legends[3].onclick();
-tiles[14].onclick();
+tiles4[14].onclick();
 
 // Click save
-document.querySelector("#lvl_save").onclick();
+// document.querySelector("#lvl_save").onclick();
